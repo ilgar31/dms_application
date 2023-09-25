@@ -35,20 +35,29 @@ class _MyApp extends State {
           style: Style(),
           child: ConvexAppBar(
             style: TabStyle.fixedCircle,
-            backgroundColor: Colors.white,
-            color: Colors.grey,
-            activeColor: Colors.black87,
+            backgroundColor: Color(0xFFF3F3F3),
+            color: Color(0xFF8A7B7B),
+            activeColor: Color(0xFF795959),
             height: 55,
             curveSize: 90,
             items: [
               TabItem(icon: Icons.person),
               TabItem(icon: Icons.photo),
-              TabItem(icon: Icons.photo),
+              TabItem(icon: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFFF8D09C),
+                ),
+                child: Image.asset("assets/tooth2.png", color: Color(0xFF8C561C))
+              )),
               TabItem(icon: Icons.calendar_today),
               TabItem(icon: Icons.assessment),
             ],
             initialActiveIndex: 1,
             onTap: (int i) {
+              if (i == 2) {
+                print('$i');
+              }
               setState(() {
                 _currentPage = i;
               });
