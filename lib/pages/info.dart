@@ -21,7 +21,7 @@ class _Info extends State {
     return MaterialApp(
       title: "Bottom navigation",
       home: Scaffold(
-        appBar: AppBar(title: Text("Bottom navigation"),),
+        appBar: AppBar(backgroundColor: Colors.white, title: Text("Информация о нас", style: TextStyle(fontFamily: "SF", color: Colors.black),),),
         body: Center(
           child: Text("Info Screen", style: TextStyle(color: Colors.black)),
         ),

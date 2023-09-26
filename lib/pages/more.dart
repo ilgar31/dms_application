@@ -21,7 +21,7 @@ class _More extends State {
     return MaterialApp(
       title: "Bottom navigation",
       home: Scaffold(
-        appBar: AppBar(title: Text("Bottom navigation"),),
+        appBar: AppBar(backgroundColor: Colors.white, title: Text("Разное", style: TextStyle(fontFamily: "SF", color: Colors.black),),),
         body: Center(
           child: Text("More Screen", style: TextStyle(color: Colors.black)),
         ),

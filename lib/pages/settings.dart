@@ -21,7 +21,7 @@ class _Settings extends State {
     return MaterialApp(
       title: "Bottom navigation",
       home: Scaffold(
-        appBar: AppBar(title: Text("Bottom navigation"),),
+        appBar: AppBar(backgroundColor: Colors.white, title: Text("Прайс и помощь", style: TextStyle(fontFamily: "SF", color: Colors.black),),),
         body: Center(
           child: Text("Settings Screen", style: TextStyle(color: Colors.black)),
         ),
