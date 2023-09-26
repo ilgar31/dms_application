@@ -19,9 +19,27 @@ class _Home extends State {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Bottom navigation",
       home: Scaffold(
-        appBar: AppBar(title: Text("Bottom navigation"),),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  IconButton(onPressed: () {}, icon: Icon(Icons.person_pin, color: Colors.black, size:30)),
+                  Padding(padding: EdgeInsets.only(left: 15),),
+                  TextButton(onPressed: () {}, child: Text("Профиль", style: TextStyle(color: Colors.black, fontFamily: "SF")))
+                ],
+              ), Row(
+                children: [
+                  IconButton(onPressed: () {}, icon: Icon(Icons.airplane_ticket_outlined, color: Colors.black, size:30)),
+                  Padding(padding: EdgeInsets.only(left: 10),),
+                  IconButton(onPressed: () {}, icon: Icon(Icons.turned_in, color: Colors.black, size:30))
+                ],
+              )
+            ]
+          ),),
         body: Center(
           child: Text("Main Screen", style: TextStyle(color: Colors.black)),
         ),
