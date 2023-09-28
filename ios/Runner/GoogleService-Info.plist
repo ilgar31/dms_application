@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyAGbDghZTo5PIxTwy20M3pbs0ho9N3qHOY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>7088326769</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.flutterProject</string>
+	<key>PROJECT_ID</key>
+	<string>dmsbase-8f62b</string>
+	<key>STORAGE_BUCKET</key>
+	<string>dmsbase-8f62b.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:7088326769:ios:e3c1c2d0c8a262caedb3d0</string>
+	<key>DATABASE_URL</key>
+	<string>https://dmsbase-8f62b-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

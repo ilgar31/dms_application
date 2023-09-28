@@ -3,6 +3,7 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:dms_project/pages/info.dart';
 import 'package:dms_project/pages/game.dart';
 import 'package:dms_project/pages/more.dart';
+import 'package:dms_project/pages/profile.dart';
 import 'package:dms_project/pages/settings.dart';
 
 void main() => runApp(Home());
@@ -24,21 +25,36 @@ class _Home extends State {
           backgroundColor: Colors.white,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  IconButton(onPressed: () {}, icon: Icon(Icons.person_pin, color: Colors.black, size:30)),
-                  Padding(padding: EdgeInsets.only(left: 15),),
-                  TextButton(onPressed: () {}, child: Text("Профиль", style: TextStyle(color: Colors.black, fontFamily: "SF")))
-                ],
-              ), Row(
-                children: [
-                  IconButton(onPressed: () {}, icon: Icon(Icons.airplane_ticket_outlined, color: Colors.black, size:30)),
-                  Padding(padding: EdgeInsets.only(left: 10),),
-                  IconButton(onPressed: () {}, icon: Icon(Icons.turned_in, color: Colors.black, size:30))
-                ],
-              )
-            ]
+              children: [
+                Row(
+                  children: [
+                    IconButton(onPressed: () {Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation1, animation2) => Profile(),
+                        transitionDuration: Duration(milliseconds: 300),
+                        transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
+                      ),
+                    );}, icon: Icon(Icons.perm_contact_calendar_rounded, color: Colors.black, size:30)),
+                    Padding(padding: EdgeInsets.fromLTRB(5, 13, 50, 10), child: TextButton(
+                        onPressed: () {Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (context, animation1, animation2) => Profile(),
+                            transitionDuration: Duration(milliseconds: 300),
+                            transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
+                          ),
+                        );}, child: Text("Профиль >", style: TextStyle(color: Colors.black, fontFamily: "SF", fontSize: 17
+                    ))),),
+                  ],
+                ), Row(
+                  children: [
+                    IconButton(onPressed: () {}, icon: Icon(Icons.airplane_ticket_outlined, color: Colors.black, size:30)),
+                    Padding(padding: EdgeInsets.only(left: 10),),
+                    IconButton(onPressed: () {}, icon: Icon(Icons.turned_in, color: Colors.black, size:30))
+                  ],
+                )
+              ]
           ),),
         body: Center(
           child: Text("Main Screen", style: TextStyle(color: Colors.black)),
@@ -88,7 +104,7 @@ class _Home extends State {
                 );
               }
               if (i == 2) {
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   PageRouteBuilder(
                     pageBuilder: (context, animation1, animation2) => Game(),

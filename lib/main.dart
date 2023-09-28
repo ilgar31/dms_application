@@ -8,9 +8,5 @@ void main() => runApp(MaterialApp(
     initialRoute: '/',
     routes: {
     '/': (context) => Home(),
-    // '/info': (context) => MainScreen(),
-    '/game': (context) => Game(),
-    // '/more': (context) => MainScreen(),
-    // '/setting': (context) => MainScreen(),
     }
 ));
