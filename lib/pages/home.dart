@@ -5,6 +5,8 @@ import 'package:dms_project/pages/game.dart';
 import 'package:dms_project/pages/more.dart';
 import 'package:dms_project/pages/profile.dart';
 import 'package:dms_project/pages/settings.dart';
+import 'package:dms_project/pages/auth.dart';
+
 
 void main() => runApp(Home());
 
@@ -31,7 +33,7 @@ class _Home extends State {
                     IconButton(onPressed: () {Navigator.push(
                       context,
                       PageRouteBuilder(
-                        pageBuilder: (context, animation1, animation2) => Profile(),
+                        pageBuilder: (context, animation1, animation2) => Auth(),
                         transitionDuration: Duration(milliseconds: 300),
                         transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
                       ),
@@ -40,7 +42,7 @@ class _Home extends State {
                         onPressed: () {Navigator.push(
                           context,
                           PageRouteBuilder(
-                            pageBuilder: (context, animation1, animation2) => Profile(),
+                            pageBuilder: (context, animation1, animation2) => Auth(),
                             transitionDuration: Duration(milliseconds: 300),
                             transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
                           ),
