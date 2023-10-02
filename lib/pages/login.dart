@@ -99,9 +99,15 @@ class MyAuth extends StatelessWidget {
               ),
             ),
             TextButton(onPressed: () {}, child: Text("Забыли пароль?", style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: "SF"))),
-            ElevatedButton(onPressed: () {
-              // context.read<LoginBlock>().add(LoginEvent.login(user_login, user_password));
-              print("nice");
+            ElevatedButton(onPressed: () async {
+              await FirebaseAuth.instance.verifyPhoneNumber(
+                phoneNumber: user_login,
+                verificationCompleted: (PhoneAuthCredential credential) {},
+                verificationFailed: (FirebaseAuthException e) {},
+                codeSent: (String verificationId, int? resendToken) {},
+                codeAutoRetrievalTimeout: (String verificationId) {},
+              );
+              print(user_login.replaceAll(" ", ''));
             }, child: Text("Войти")),
             ElevatedButton(onPressed: () {
               print("$user_login    $user_password");

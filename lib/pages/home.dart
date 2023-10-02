@@ -5,7 +5,7 @@ import 'package:dms_project/pages/game.dart';
 import 'package:dms_project/pages/more.dart';
 import 'package:dms_project/pages/profile.dart';
 import 'package:dms_project/pages/settings.dart';
-import 'package:dms_project/pages/auth.dart';
+import 'package:dms_project/pages/login.dart';
 
 
 void main() => runApp(Home());
