@@ -1,15 +1,26 @@
+// import 'package:flutter/material.dart';
+// import 'package:dms_project/pages/home.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:dms_project/firebase_options.dart';
+// import 'package:get/get.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 //
-// class AuthService {
-//   final FirebaseAuth _fAuth = FirebaseAuth.instance;
 //
-//   Future signInWithPhone(String phone) async {
-//     try{
-//       ConfirmationResult authResult = await _fAuth.signInWithPhoneNumber(phone);
-//       User user = authResult.user;
-//       return user;
-//     }catch(e){
-//       return null;
+//
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//
+//   await Firebase.initializeApp(
+//     options: DefaultFirebaseOptions.currentPlatform,
+//   );
+//
+//   FirebaseAuth.instance
+//       .authStateChanges()
+//       .listen((User? user) {
+//     if (user == null) {
+//       print('User is currently signed out!');
+//     } else {
+//       print('User is signed in!');
 //     }
-//   }
+//   });
 // }

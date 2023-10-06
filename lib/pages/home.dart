@@ -3,12 +3,20 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:dms_project/pages/info.dart';
 import 'package:dms_project/pages/game.dart';
 import 'package:dms_project/pages/more.dart';
+import 'package:dms_project/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:dms_project/pages/profile.dart';
 import 'package:dms_project/pages/settings.dart';
 import 'package:dms_project/pages/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 
-void main() => runApp(Home());
+void main() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
+
+    runApp(MaterialApp(home: Home()));
+}
 
 class Home extends StatefulWidget {
   const Home({Key, key}): super(key: key);
@@ -21,6 +29,7 @@ class _Home extends State {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -30,23 +39,59 @@ class _Home extends State {
               children: [
                 Row(
                   children: [
-                    IconButton(onPressed: () {Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation1, animation2) => Auth(),
-                        transitionDuration: Duration(milliseconds: 300),
-                        transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
-                      ),
-                    );}, icon: Icon(Icons.perm_contact_calendar_rounded, color: Colors.black, size:30)),
-                    Padding(padding: EdgeInsets.fromLTRB(5, 13, 50, 10), child: TextButton(
-                        onPressed: () {Navigator.push(
+                    IconButton(onPressed: () {
+                      if (user == null){
+                        Navigator.push(
                           context,
                           PageRouteBuilder(
-                            pageBuilder: (context, animation1, animation2) => Auth(),
+                            pageBuilder: (context, animation1, animation2) =>
+                                Auth(),
                             transitionDuration: Duration(milliseconds: 300),
-                            transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
+                            transitionsBuilder: (_, a, __, c) =>
+                                FadeTransition(opacity: a, child: c),
                           ),
-                        );}, child: Text("Профиль >", style: TextStyle(color: Colors.black, fontFamily: "SF", fontSize: 17
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (context, animation1, animation2) =>
+                                Profile(),
+                            transitionDuration: Duration(milliseconds: 300),
+                            transitionsBuilder: (_, a, __, c) =>
+                                FadeTransition(opacity: a, child: c),
+                          ),
+                        );
+                      }
+                    },
+                    icon: Icon(Icons.perm_contact_calendar_rounded, color: Colors.black, size:30)),
+                    Padding(padding: EdgeInsets.fromLTRB(5, 13, 50, 10), child: TextButton(
+                        onPressed: () {
+                          if (user == null)
+                          {
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation1, animation2) =>
+                                  Auth(),
+                              transitionDuration: Duration(milliseconds: 300),
+                              transitionsBuilder: (_, a, __, c) =>
+                                  FadeTransition(opacity: a, child: c),
+                            ),
+                          );
+                        } else {
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (context, animation1, animation2) =>
+                                    Profile(),
+                                transitionDuration: Duration(milliseconds: 300),
+                                transitionsBuilder: (_, a, __, c) =>
+                                    FadeTransition(opacity: a, child: c),
+                              ),
+                            );
+                        }
+                      }, child: Text("Профиль >", style: TextStyle(color: Colors.black, fontFamily: "SF", fontSize: 17
                     ))),),
                   ],
                 ), Row(

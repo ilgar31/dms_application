@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dms_project/pages/home.dart';
 import 'package:dms_project/pages/profile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 void main() => runApp(Profile());
 
@@ -91,11 +93,27 @@ void printOnClick(string) {
 
 
 class _Profile extends State {
+  final user = FirebaseAuth.instance.currentUser;
+
+  Future<void> signOut() async {
+    final navigator = Navigator.of(context);
+
+    await FirebaseAuth.instance.signOut();
+
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation1, animation2) => Home(),
+        transitionDuration: Duration(milliseconds: 300),
+        transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
+      ),
+    );  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Row(
@@ -123,6 +141,10 @@ class _Profile extends State {
               MyInput(input_name: 'E-mail', input_value: 'ilgar.bagishev@gmail.com'),
               MyInput(input_name: 'День рождения', input_value: '31/03/2006'),
               MyInput(input_name: 'Пол', input_value: 'Мужской'),
+              TextButton(
+                onPressed: () => signOut(),
+                child: const Text('Выйти'),
+              ),
             ]
           )
         ),

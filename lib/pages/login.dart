@@ -100,16 +100,17 @@ class MyAuth extends StatelessWidget {
             ),
             TextButton(onPressed: () {}, child: Text("Забыли пароль?", style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: "SF"))),
             ElevatedButton(onPressed: () async {
+            }, child: Text("Войти")),
+            ElevatedButton(onPressed: () async {
               await FirebaseAuth.instance.verifyPhoneNumber(
                 phoneNumber: user_login,
-                verificationCompleted: (PhoneAuthCredential credential) {},
-                verificationFailed: (FirebaseAuthException e) {},
+                verificationCompleted: (PhoneAuthCredential credential) async {
+                  await FirebaseAuth.instance.signInWithCredential(credential);
+                },
+                verificationFailed: (FirebaseAuthException e) {}, //функция ошибки, необходимо реализовать !!!
                 codeSent: (String verificationId, int? resendToken) {},
                 codeAutoRetrievalTimeout: (String verificationId) {},
               );
-              print(user_login.replaceAll(" ", ''));
-            }, child: Text("Войти")),
-            ElevatedButton(onPressed: () {
               print("$user_login    $user_password");
             }, child: Text("Зарегистрироваться"))
           ],
