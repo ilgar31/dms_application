@@ -5,8 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:dms_project/pages/profile.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:dms_project/pages/otp.dart';
+import 'package:dms_project/functions/function.dart';
+
 
 
 
@@ -39,8 +40,7 @@ class MyAuth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var user_login;
-    var user_password;
+    var phone;
     TextEditingController _controller = TextEditingController();
     return Scaffold(
       body: Center(
@@ -57,7 +57,7 @@ class MyAuth extends StatelessWidget {
                 maxLength: 16,
                 inputFormatters: [PhoneInputFormatter()],
                 onChanged: (String value) {
-                  user_login = value;
+                  phone = value;
                 },
                 controller: _controller,
                 onTap: () {
@@ -79,26 +79,6 @@ class MyAuth extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 14),
-              child: TextField(
-                textAlignVertical: TextAlignVertical.center,
-                obscureText: true,
-                onChanged: (String value) {
-                  user_password = value;
-                },
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                  ),
-                  hintText: 'Пароль',
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: 3, color: Colors.black),
-                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                  ),
-                ),
-              ),
-            ),
             TextButton(onPressed: () {}, child: Text("Забыли пароль?", style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: "SF"))),
             ElevatedButton(onPressed: () async {
               Navigator.push(
@@ -112,17 +92,19 @@ class MyAuth extends StatelessWidget {
                 ),
               );
             }, child: Text("Войти")),
-            ElevatedButton(onPressed: () async {
-              await FirebaseAuth.instance.verifyPhoneNumber(
-                phoneNumber: user_login,
-                verificationCompleted: (PhoneAuthCredential credential) async {
-                  await FirebaseAuth.instance.signInWithCredential(credential);
-                },
-                verificationFailed: (FirebaseAuthException e) {}, //функция ошибки, необходимо реализовать !!!
-                codeSent: (String verificationId, int? resendToken) {},
-                codeAutoRetrievalTimeout: (String verificationId) {},
+            ElevatedButton(onPressed: () {
+              Functions.instance.phoneAuth(phone);
+              print("$phone");
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation1, animation2) =>
+                      OTP(),
+                  transitionDuration: Duration(milliseconds: 300),
+                  transitionsBuilder: (_, a, __, c) =>
+                      FadeTransition(opacity: a, child: c),
+                ),
               );
-              print("$user_login    $user_password");
             }, child: Text("Зарегистрироваться"))
           ],
         ),
