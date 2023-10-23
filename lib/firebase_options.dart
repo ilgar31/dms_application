@@ -69,6 +69,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '838079767924',
     projectId: 'dmsproject-99d8e',
     storageBucket: 'dmsproject-99d8e.appspot.com',
+    androidClientId: '838079767924-0qhrukk6tstchurkqh6fuunek4cpt5gq.apps.googleusercontent.com',
+    iosClientId: '838079767924-5q3hgepmsl1e278hlo3lcb3c50semdj8.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutterProject',
   );
 }

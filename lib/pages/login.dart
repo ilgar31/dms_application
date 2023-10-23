@@ -4,6 +4,7 @@ import 'package:dms_project/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
+import 'package:dms_project/pages/profile.dart';
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -100,6 +101,16 @@ class MyAuth extends StatelessWidget {
             ),
             TextButton(onPressed: () {}, child: Text("Забыли пароль?", style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: "SF"))),
             ElevatedButton(onPressed: () async {
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation1, animation2) =>
+                      Profile(),
+                  transitionDuration: Duration(milliseconds: 300),
+                  transitionsBuilder: (_, a, __, c) =>
+                      FadeTransition(opacity: a, child: c),
+                ),
+              );
             }, child: Text("Войти")),
             ElevatedButton(onPressed: () async {
               await FirebaseAuth.instance.verifyPhoneNumber(
