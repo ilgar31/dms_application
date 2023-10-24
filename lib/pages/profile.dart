@@ -137,7 +137,7 @@ class _Profile extends State {
               Padding(padding: EdgeInsets.only(top: 50),),
               Icon(Icons.person_rounded, size: 150,),
               Padding(padding: EdgeInsets.only(top: 20),),
-              MyInput(input_name: 'Телефон', input_value: '+79066344367'),
+              MyInput(input_name: 'Телефон', input_value: ),
               MyInput(input_name: 'E-mail', input_value: 'ilgar.bagishev@gmail.com'),
               MyInput(input_name: 'День рождения', input_value: '31/03/2006'),
               MyInput(input_name: 'Пол', input_value: 'Мужской'),

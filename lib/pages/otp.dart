@@ -43,6 +43,16 @@ class OTP extends StatelessWidget {
             SizedBox(height: 40.0,),
             ElevatedButton(onPressed: () async {
               OTPController.instance.verifyOTP(otp);
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation1, animation2) =>
+                      Profile(),
+                  transitionDuration: Duration(milliseconds: 300),
+                  transitionsBuilder: (_, a, __, c) =>
+                      FadeTransition(opacity: a, child: c),
+                ),
+              );
             }, child: Text("Отправить"),
             ),
           ],
