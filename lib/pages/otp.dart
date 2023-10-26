@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:dms_project/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:dms_project/pages/profile.dart';
+import 'package:dms_project/pages/home.dart';
 import 'package:dms_project/functions/otp_controller.dart';
 
 
@@ -43,11 +45,13 @@ class OTP extends StatelessWidget {
             SizedBox(height: 40.0,),
             ElevatedButton(onPressed: () async {
               OTPController.instance.verifyOTP(otp);
+              FirebaseFirestore.instance.collection("users").add({"uid": FirebaseAuth.instance.currentUser!.uid, "phone": FirebaseAuth.instance.currentUser!.phoneNumber,
+                "email": "Введите свой E-mail", "birthday": "01/01/2000", "gender": "Мужчина"});
               Navigator.push(
                 context,
                 PageRouteBuilder(
                   pageBuilder: (context, animation1, animation2) =>
-                      Profile(),
+                      Home(),
                   transitionDuration: Duration(milliseconds: 300),
                   transitionsBuilder: (_, a, __, c) =>
                       FadeTransition(opacity: a, child: c),

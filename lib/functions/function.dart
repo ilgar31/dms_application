@@ -31,8 +31,6 @@ class Functions extends GetxController{
       phoneNumber: phone,
       verificationCompleted: (PhoneAuthCredential credential) async {
         await _auth.signInWithCredential(credential);
-        FirebaseFirestore.instance.collection("users").add({"uid": auth.currentUser!.uid, "phone": auth.currentUser!.phoneNumber,
-          "email": "Введите свой E-mail", "birthday": "01/01/2000", "gender": "Мужчина"});
       },
       verificationFailed: (FirebaseAuthException e) {
         if (e.code == "invalid-phone-number") {
