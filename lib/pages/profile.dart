@@ -1,8 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:dms_project/pages/home.dart';
 import 'package:dms_project/pages/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 
 
 void main() => runApp(Profile());
@@ -51,6 +53,14 @@ class _MyInput extends State<MyInput>{
                       setState(() {
                         input_value = _user_input;
                       });
+                      final docRef = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid);
+                      docRef.get().then(
+                            (DocumentSnapshot doc) {
+                          final data = doc.data() as Map<String, dynamic>;
+                          data[input_name] = input_value;
+                          FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).set(data);
+                          }
+                      );
                       Navigator.of(context, rootNavigator: true).pop();
                       }, child: Text("Сохранить"))
                   ],
@@ -96,6 +106,7 @@ void printOnClick(string) {
 class _Profile extends State {
   final user = FirebaseAuth.instance.currentUser;
 
+
   Future<void> signOut() async {
     final navigator = Navigator.of(context);
 
@@ -108,12 +119,12 @@ class _Profile extends State {
         transitionDuration: Duration(milliseconds: 300),
         transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
       ),
-    );  }
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
-    var uid = user?.uid;
     return MaterialApp(
       home: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -135,31 +146,41 @@ class _Profile extends State {
           ),
         ),
         body: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('users').snapshots(),
-          builder: (BuildContext context, AsyncSnapshot <QuerySnapshot> snapshot) {
-            return Center(
-                child: Column(
-                    children: [
-                      Padding(padding: EdgeInsets.only(top: 50),),
-                      Icon(Icons.person_rounded, size: 150,),
-                      Padding(padding: EdgeInsets.only(top: 20),),
-                      MyInput(input_name: 'Телефон', input_value: snapshot.data),
-                      MyInput(input_name: 'E-mail', input_value: 'ilgar.bagishev@gmail.com'),
-                      MyInput(input_name: 'День рождения', input_value: '31/03/2006'),
-                      MyInput(input_name: 'Пол', input_value: 'Мужской'),
-                      TextButton(
-                        onPressed: () => signOut(),
-                        child: const Text('Выйти'),
-                      ),
-                    ]
-                )
-            );
+          stream: FirebaseFirestore.instance.collection('users').doc(user?.uid).snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
+            if (snapshot.hasData && snapshot.data!.exists) {
+              return Center(
+                  child: Column(
+                      children: [
+                        Padding(padding: EdgeInsets.only(top: 50),),
+                        Icon(Icons.person_rounded, size: 150,),
+                        Padding(padding: EdgeInsets.only(top: 20),),
+                        MyInput(input_name: 'Телефон',
+                            input_value: (snapshot
+                                .data as DocumentSnapshot)['Телефон']),
+                        MyInput(input_name: 'E-mail',
+                            input_value: (snapshot
+                                .data as DocumentSnapshot)['E-mail']),
+                        MyInput(input_name: 'День рождения',
+                            input_value: (snapshot
+                                .data as DocumentSnapshot)['День рождения']),
+                        MyInput(input_name: 'Пол',
+                            input_value: (snapshot
+                                .data as DocumentSnapshot)['Пол']),
+                        TextButton(
+                          onPressed: () => signOut(),
+                          child: const Text('Выйти'),
+                        ),
+                      ]
+                  )
+              );
+            }
+            else {
+              return Center();
+            }
           }
-        )
-      ),
+        ),
+      )
     );
   }
 }
-
-
-

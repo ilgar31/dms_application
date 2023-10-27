@@ -45,19 +45,36 @@ class OTP extends StatelessWidget {
             SizedBox(height: 40.0,),
             ElevatedButton(onPressed: () async {
               OTPController.instance.verifyOTP(otp);
-              FirebaseFirestore.instance.collection("users").add({"uid": FirebaseAuth.instance.currentUser!.uid, "phone": FirebaseAuth.instance.currentUser!.phoneNumber,
-                "email": "Введите свой E-mail", "birthday": "01/01/2000", "gender": "Мужчина"});
+              bool flag = true;
+              await FirebaseFirestore.instance.collection("users").get().then((event) {
+                for (var doc in event.docs) {
+                  if (FirebaseAuth.instance.currentUser!.uid == doc.id) {
+                    flag = false;
+                    break;
+                  }
+                }
+              });
+              if (flag) {
+                  FirebaseFirestore.instance
+                      .collection("users")
+                      .doc(FirebaseAuth.instance.currentUser!.uid)
+                      .set({
+                    "Телефон": FirebaseAuth.instance.currentUser!.phoneNumber,
+                    "E-mail": "Введите свой E-mail",
+                    "День рождения": "01/01/2000",
+                    "Пол": "Мужчина"
+                  });
+                }
               Navigator.push(
                 context,
                 PageRouteBuilder(
-                  pageBuilder: (context, animation1, animation2) =>
-                      Home(),
+                  pageBuilder: (context, animation1, animation2) => Home(),
                   transitionDuration: Duration(milliseconds: 300),
                   transitionsBuilder: (_, a, __, c) =>
                       FadeTransition(opacity: a, child: c),
                 ),
               );
-            }, child: Text("Отправить"),
+              }, child: Text("Отправить"),
             ),
           ],
         ),

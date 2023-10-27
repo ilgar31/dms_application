@@ -93,7 +93,7 @@ class _Info extends State {
                 Navigator.pushReplacement(
                   context,
                   PageRouteBuilder(
-                    pageBuilder: (context, animation1, animation2) => Settings(),
+                    pageBuilder: (context, animation1, animation2) => SettingsApp(),
                     transitionDuration: Duration.zero,
                     reverseTransitionDuration: Duration.zero,
                   ),

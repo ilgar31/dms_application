@@ -9,6 +9,8 @@ import 'package:dms_project/pages/profile.dart';
 import 'package:dms_project/pages/settings.dart';
 import 'package:dms_project/pages/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 
 void main() async {
@@ -174,7 +176,7 @@ class _Home extends State {
                 Navigator.pushReplacement(
                   context,
                   PageRouteBuilder(
-                    pageBuilder: (context, animation1, animation2) => Settings(),
+                    pageBuilder: (context, animation1, animation2) => SettingsApp(),
                     transitionDuration: Duration.zero,
                     reverseTransitionDuration: Duration.zero,
                   ),

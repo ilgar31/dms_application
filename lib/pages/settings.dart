@@ -5,16 +5,16 @@ import 'package:dms_project/pages/game.dart';
 import 'package:dms_project/pages/more.dart';
 import 'package:dms_project/pages/home.dart';
 
-void main() => runApp(Settings());
+void main() => runApp(SettingsApp());
 
-class Settings extends StatefulWidget {
-  const Settings({Key, key}): super(key: key);
+class SettingsApp extends StatefulWidget {
+  const SettingsApp({Key, key}): super(key: key);
 
   @override
-  _Settings createState() => _Settings();
+  _SettingsApp createState() => _SettingsApp();
 }
 
-class _Settings extends State {
+class _SettingsApp extends State {
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +93,7 @@ class _Settings extends State {
                 Navigator.pushReplacement(
                   context,
                   PageRouteBuilder(
-                    pageBuilder: (context, animation1, animation2) => Settings(),
+                    pageBuilder: (context, animation1, animation2) => SettingsApp(),
                     transitionDuration: Duration.zero,
                     reverseTransitionDuration: Duration.zero,
                   ),
