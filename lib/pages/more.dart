@@ -30,22 +30,22 @@ class _More extends State {
           child: ConvexAppBar(
             style: TabStyle.fixedCircle,
             backgroundColor: Color(0xFFF3F3F3),
-            color: Color(0xFF8A7B7B),
-            activeColor: Color(0xFF795959),
+            color: Color(0xFF696969),
+            activeColor: Color(0xFF424242),
             height: 55,
             curveSize: 90,
             items: [
-              TabItem(icon: Icons.person),
+              TabItem(icon: Icons.home_filled),
               TabItem(icon: Icons.info),
               TabItem(icon: Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Color(0xFFF8D09C),
+                    color: Color(0xFF494949),
                   ),
-                  child: Image.asset("assets/tooth2.png", color: Color(0xFF8C561C))
+                  child: Image.asset("assets/tooth2.png", color: Colors.white)
               )),
-              TabItem(icon: Icons.more_horiz),
-              TabItem(icon: Icons.settings),
+              TabItem(icon: Icons.work),
+              TabItem(icon: Icons.maps_home_work_outlined),
             ],
             initialActiveIndex: 3,
             onTap: (int i) {

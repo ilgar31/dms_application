@@ -44,7 +44,9 @@ class OTP extends StatelessWidget {
             ),
             SizedBox(height: 40.0,),
             ElevatedButton(onPressed: () async {
+              debugPrint("before!!!!!!!!!!!!!!!!!!!!!!!!!!!");
               OTPController.instance.verifyOTP(otp);
+              debugPrint("after!!!!!!!!!!!!!!!!!!!!!!!!!!!");
               bool flag = true;
               await FirebaseFirestore.instance.collection("users").get().then((event) {
                 for (var doc in event.docs) {
@@ -60,11 +62,13 @@ class OTP extends StatelessWidget {
                       .doc(FirebaseAuth.instance.currentUser!.uid)
                       .set({
                     "Телефон": FirebaseAuth.instance.currentUser!.phoneNumber,
+                    "ФИО": "Введите своё ФИО",
                     "E-mail": "Введите свой E-mail",
-                    "День рождения": "01/01/2000",
-                    "Пол": "Мужчина"
+                    "День рождения": "Введите дату рождения",
+                    "Пол": "Выберите муж/жен"
                   });
                 }
+              debugPrint("too!!!!!!!!!!!!!!!!!!!!!!!!!!!");
               Navigator.push(
                 context,
                 PageRouteBuilder(

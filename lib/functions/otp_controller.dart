@@ -13,7 +13,7 @@ class OTPController extends GetxController{
 
   void verifyOTP(String otp) async {
     var isVerifed = await Functions.instance.verifyOTP(otp);
-    isVerifed ? Get.offAll(const Profile()) : Get.back();
+    isVerifed ? Get.offAll(const Home()) : Get.back();
   }
 
 }
