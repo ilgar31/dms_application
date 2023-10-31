@@ -37,7 +37,7 @@ class _MyInput extends State<MyInput>{
 
   dynamic input_name;
   dynamic input_value;
-  dynamic _user_input;
+  dynamic _user_input = '';
 
   DateTime currentDate(String input_value) {
     if (input_value != "Введите дату рождения") {
@@ -104,6 +104,8 @@ class _MyInput extends State<MyInput>{
                 context: context,
                 builder: (context) => StatefulBuilder(builder: (context, state) {
                   return AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
                     title: Text(input_name),
                     content: Container(
                       height: 113.0,
@@ -170,6 +172,8 @@ class _MyInput extends State<MyInput>{
                 context: context,
                 builder: (context) => StatefulBuilder(builder: (context, state) {
                   return AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
                     title: Text(input_name),
                     content: TextFormField(
                       initialValue: input_value,
@@ -181,9 +185,9 @@ class _MyInput extends State<MyInput>{
                       ElevatedButton(onPressed: () {
                         final bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                             .hasMatch(_user_input);
-                        if (emailValid) {
+                        if (input_name != "E-mail" || emailValid || (_user_input == '' && input_value != "Введите свой E-mail")) {
                           setState(() {
-                            if (_user_input != null) {
+                            if (_user_input != '') {
                               input_value = _user_input;
                             }
                           });
@@ -206,6 +210,8 @@ class _MyInput extends State<MyInput>{
                             context: context,
                             builder: (context) => StatefulBuilder(builder: (context, state) {
                               return AlertDialog(title: Text("Введён неправильный формат E-mail"),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(15))),
                                 content:
                               ConstrainedBox(
                               constraints: BoxConstraints.tightFor(width: 100, height: 50),
