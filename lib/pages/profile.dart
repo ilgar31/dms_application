@@ -4,6 +4,8 @@ import 'package:dms_project/pages/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
+
 
 
 
@@ -20,8 +22,8 @@ enum SingingCharacter { male, female }
 
 class MyInput extends StatefulWidget {
 
-  var input_name;
-  var input_value;
+  dynamic input_name;
+  dynamic input_value;
 
   MyInput({ super.key, required this.input_name, required this.input_value});
   @override
@@ -29,19 +31,75 @@ class MyInput extends StatefulWidget {
 }
 class _MyInput extends State<MyInput>{
 
+  _MyInput(this.input_name, this.input_value);
+
   SingingCharacter? _character = SingingCharacter.male;
 
-  var input_name;
-  var input_value;
-  var _user_input;
+  dynamic input_name;
+  dynamic input_value;
+  dynamic _user_input;
 
-  _MyInput(this.input_name, this.input_value);
+  DateTime currentDate(String input_value) {
+    if (input_value != "Введите дату рождения") {
+      List mas = input_value.split('/');
+      return DateTime(int.parse(mas[2]), int.parse(mas[1]), int.parse(mas[0]));
+    }
+    else {
+      return DateTime(2000, 1, 1);
+    }
+  }
+
+  void _showDialog(Widget child) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => Container(
+        height: 216,
+        padding: const EdgeInsets.only(top: 6.0),
+        margin: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        color: CupertinoColors.systemBackground.resolveFrom(context),
+        child: SafeArea(
+          top: false,
+          child: child,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () async {
-          if (input_name == "Пол") {
+          if (input_name == "День рождения") {
+            _showDialog(
+              CupertinoDatePicker(
+                initialDateTime: currentDate(input_value),
+                mode: CupertinoDatePickerMode.date,
+                maximumYear: DateTime.now().year - 18,
+                minimumYear: 1930,
+                dateOrder: DatePickerDateOrder.dmy,
+                onDateTimeChanged: (DateTime newDate) {
+                  setState(() {
+                    input_value = '${newDate.day}/${newDate.month}/${newDate.year}';
+                    final docRef = FirebaseFirestore.instance.collection(
+                        'users').doc(
+                        FirebaseAuth.instance.currentUser?.uid);
+                    docRef.get().then(
+                            (DocumentSnapshot doc) {
+                          final data = doc.data() as Map<String, dynamic>;
+                          data[input_name] = input_value;
+                          FirebaseFirestore.instance.collection("users")
+                              .doc(FirebaseAuth.instance.currentUser?.uid)
+                              .set(data);
+                        }
+                    );
+                  });
+                },
+              ),
+            );
+          }
+          else if (input_name == "Пол") {
             showDialog(
                 context: context,
                 builder: (context) => StatefulBuilder(builder: (context, state) {
@@ -121,23 +179,47 @@ class _MyInput extends State<MyInput>{
                     ),
                     actions: [
                       ElevatedButton(onPressed: () {
-                        setState(() {
-                          if (_user_input != null)
-                          {input_value = _user_input;}
-                        });
-                        final docRef = FirebaseFirestore.instance.collection(
-                            'users').doc(
-                            FirebaseAuth.instance.currentUser?.uid);
-                        docRef.get().then(
-                                (DocumentSnapshot doc) {
-                              final data = doc.data() as Map<String, dynamic>;
-                              data[input_name] = input_value;
-                              FirebaseFirestore.instance.collection("users")
-                                  .doc(FirebaseAuth.instance.currentUser?.uid)
-                                  .set(data);
+                        final bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            .hasMatch(_user_input);
+                        if (emailValid) {
+                          setState(() {
+                            if (_user_input != null) {
+                              input_value = _user_input;
                             }
-                        );
-                        Navigator.of(context, rootNavigator: true).pop();
+                          });
+                          final docRef = FirebaseFirestore.instance.collection(
+                              'users').doc(
+                              FirebaseAuth.instance.currentUser?.uid);
+                          docRef.get().then(
+                                  (DocumentSnapshot doc) {
+                                final data = doc.data() as Map<String, dynamic>;
+                                data[input_name] = input_value;
+                                FirebaseFirestore.instance.collection("users")
+                                    .doc(FirebaseAuth.instance.currentUser?.uid)
+                                    .set(data);
+                              }
+                          );
+                          Navigator.of(context, rootNavigator: true).pop();
+                        }
+                        else {
+                          showDialog(
+                            context: context,
+                            builder: (context) => StatefulBuilder(builder: (context, state) {
+                              return AlertDialog(title: Text("Введён неправильный формат E-mail"),
+                                content:
+                              ConstrainedBox(
+                              constraints: BoxConstraints.tightFor(width: 100, height: 50),
+                              child: ElevatedButton(
+                                  onPressed: () {Navigator.of(context, rootNavigator: true).pop();},
+                                  child: Center(child: Text("Понятно"),),
+                                  style: ElevatedButton.styleFrom(primary: Color(0xff494949)),
+                                )
+                              )
+                            );
+                          }
+                          )
+                          );
+                        }
                       }, child: Center(child: Text("Сохранить")),
                         style: ElevatedButton.styleFrom(
                             primary: Color(0xff494949),
@@ -257,9 +339,9 @@ class _Profile extends State {
                       child: Container(
                           width: MediaQuery.of(context).size.width * 0.95,
                           decoration: BoxDecoration(
-                              color: Color(0xffe43d3d),
+                              color: Color(0xff494949),
                               border: Border.all(
-                                  color: Color(0xffe43d3d), // Set border color
+                                  color: Color(0xff494949), // Set border color
                                   width: 1.0),   // Set border width
                               borderRadius: BorderRadius.all(
                                   Radius.circular(10.0)), // Set rounded corner radius
