@@ -15,7 +15,7 @@ class OTP extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var otp;
+    var otp = '';
     return Scaffold(
       body: Container(
         child: Column(
@@ -44,19 +44,22 @@ class OTP extends StatelessWidget {
             ),
             SizedBox(height: 40.0,),
             ElevatedButton(onPressed: () async {
-              debugPrint("before!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-              OTPController.instance.verifyOTP(otp);
-              debugPrint("after!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-              bool flag = true;
-              await FirebaseFirestore.instance.collection("users").get().then((event) {
-                for (var doc in event.docs) {
-                  if (FirebaseAuth.instance.currentUser!.uid == doc.id) {
-                    flag = false;
-                    break;
+              debugPrint("before!!!!!!!!!!!!!!!!!!!!!!!!!!!  ${otp}");
+              Future<bool> ans = OTPController.instance.verifyOTP(otp);
+              ans.then((value) async {
+                debugPrint("after!!!!!!!!!!!!!!!!!!!!!!!!!!!  ${otp}");
+                bool flag = true;
+                await FirebaseFirestore.instance.collection("users")
+                    .get()
+                    .then((event) {
+                  for (var doc in event.docs) {
+                    if (FirebaseAuth.instance.currentUser!.uid == doc.id) {
+                      flag = false;
+                      break;
+                    }
                   }
-                }
-              });
-              if (flag) {
+                });
+                if (flag) {
                   FirebaseFirestore.instance
                       .collection("users")
                       .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -68,16 +71,17 @@ class OTP extends StatelessWidget {
                     "Пол": "Выберите муж/жен"
                   });
                 }
-              debugPrint("too!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-              Navigator.push(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (context, animation1, animation2) => Home(),
-                  transitionDuration: Duration(milliseconds: 300),
-                  transitionsBuilder: (_, a, __, c) =>
-                      FadeTransition(opacity: a, child: c),
-                ),
-              );
+                debugPrint("too!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                Navigator.pushReplacement(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation1, animation2) => Home(),
+                    transitionDuration: Duration(milliseconds: 300),
+                    transitionsBuilder: (_, a, __, c) =>
+                        FadeTransition(opacity: a, child: c),
+                  ),
+                );
+              });
               }, child: Text("Отправить"),
             ),
           ],

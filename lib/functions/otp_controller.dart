@@ -11,9 +11,9 @@ import 'package:dms_project/functions/function.dart';
 class OTPController extends GetxController{
   static OTPController get instance => Get.put(OTPController());
 
-  void verifyOTP(String otp) async {
+  Future<bool> verifyOTP(String otp) async {
     var isVerifed = await Functions.instance.verifyOTP(otp);
-    isVerifed ? Get.offAll(const Home()) : Get.back();
+    return Future<bool>.value(isVerifed);
   }
 
 }

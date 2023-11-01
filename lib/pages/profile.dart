@@ -310,7 +310,7 @@ class _Profile extends State {
                   transitionDuration: Duration(milliseconds: 300),
                   transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
                 ),
-              );}, icon: Icon(Icons.keyboard_backspace), color: Colors.black),
+                );}, icon: Icon(Icons.keyboard_backspace), color: Colors.black),
               Padding(padding: EdgeInsets.only(left: 10),),
               Padding(padding: EdgeInsets.only(bottom: 20),),
               Text("Профиль", style: TextStyle(color: Colors.black),),

@@ -8,6 +8,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:dms_project/pages/profile.dart';
 import 'package:dms_project/pages/settings.dart';
 import 'package:dms_project/pages/login.dart';
+import 'package:dms_project/pages/gifts.dart';
+import 'package:dms_project/pages/notifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -84,9 +86,33 @@ class _Home extends State {
                     ],
                   ), Row(
                     children: [
-                      IconButton(onPressed: () => signOut(), icon: Icon(Icons.card_giftcard, color: Colors.black, size:30)),
+                      IconButton(onPressed: () => {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation1, animation2) =>
+                          Gifts(),
+                          transitionDuration: Duration(milliseconds: 300),
+                          transitionsBuilder: (_, a, __, c) =>
+                          FadeTransition(opacity: a, child: c),
+                        ),
+                      ),
+                        },
+                      icon: Icon(Icons.card_giftcard, color: Colors.black, size:30)),
                       Padding(padding: EdgeInsets.only(left: 10),),
-                      IconButton(onPressed: () => debugPrint(FirebaseAuth.instance.currentUser!.uid), icon: Icon(Icons.notifications_rounded, color: Colors.black, size:30))
+                      IconButton(onPressed: () => {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (context, animation1, animation2) =>
+                              Notifications(),
+                            transitionDuration: Duration(milliseconds: 300),
+                            transitionsBuilder: (_, a, __, c) =>
+                            FadeTransition(opacity: a, child: c),
+                          ),
+                        ),
+                      },
+                      icon: Icon(Icons.notifications_rounded, color: Colors.black, size:30))
                     ],
                   )
                 ]

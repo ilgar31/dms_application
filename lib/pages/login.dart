@@ -94,7 +94,6 @@ class MyAuth extends StatelessWidget {
             }, child: Text("Войти")),
             ElevatedButton(onPressed: () {
               Functions.instance.phoneAuth(phone);
-              print("$phone");
               Navigator.push(
                 context,
                 PageRouteBuilder(

@@ -26,7 +26,7 @@ void main() async {
     });
 
 
-    runApp(MaterialApp(
+    runApp(GetMaterialApp(
         initialRoute: '/',
         routes: {
             '/': (context) => Home(),
