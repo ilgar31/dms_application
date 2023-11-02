@@ -85,6 +85,9 @@ flutter:
    - family: SF
      fonts:
        - asset: fonts/SFProText-Regular.ttf
+   - family: Inter
+     fonts:
+       - asset: fonts/Inter-VariableFont_slnt,wght.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
@@ -93,3 +96,4 @@ flutter:
     - assets/tooth2.png
     - assets/master.png
     - assets/profileFoto.png
+    - assets/welcom.png

@@ -21,16 +21,7 @@ class Gifts extends StatelessWidget {
         title: Row(
         children: [
           IconButton(onPressed: () => {
-            Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation1, animation2) =>
-                    Home(),
-                transitionDuration: Duration(milliseconds: 300),
-                transitionsBuilder: (_, a, __, c) =>
-                    FadeTransition(opacity: a, child: c),
-              ),
-            ),
+            Navigator.pop(context),
           },
           icon: Icon(Icons.keyboard_backspace), color: Colors.black),
           Padding(padding: EdgeInsets.only(left: 10),),

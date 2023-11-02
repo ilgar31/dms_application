@@ -7,7 +7,7 @@ import 'package:dms_project/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:dms_project/pages/profile.dart';
 import 'package:dms_project/pages/settings.dart';
-import 'package:dms_project/pages/login.dart';
+import 'package:dms_project/pages/welcom.dart';
 import 'package:dms_project/pages/gifts.dart';
 import 'package:dms_project/pages/notifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -51,8 +51,8 @@ class _Home extends State {
                     context,
                     PageRouteBuilder(
                       pageBuilder: (context, animation1, animation2) =>
-                          Auth(),
-                      transitionDuration: Duration(milliseconds: 300),
+                          Welcom(),
+                      transitionDuration: Duration(milliseconds: 700),
                       transitionsBuilder: (_, a, __, c) =>
                           FadeTransition(opacity: a, child: c),
                     ),

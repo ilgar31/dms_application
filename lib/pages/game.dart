@@ -22,14 +22,9 @@ class _Game extends State {
           backgroundColor: Color(0xFFC4E3B0),
           title: Row(
             children: [
-              IconButton(onPressed: () {Navigator.pushReplacement(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (context, animation1, animation2) => Home(),
-                  transitionDuration: Duration(milliseconds: 300),
-                  transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
-                ),
-              );}, icon: Icon(Icons.arrow_back)),
+              IconButton(onPressed: () {
+                Navigator.pop(context);
+              }, icon: Icon(Icons.arrow_back)),
               Padding(padding: EdgeInsets.only(left: 25),),
               Text("Tetris game", style: TextStyle(color: Colors.black38),),
             ],
