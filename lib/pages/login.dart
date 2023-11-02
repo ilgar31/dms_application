@@ -72,8 +72,9 @@ class MyAuth extends StatelessWidget {
               Padding(padding: EdgeInsets.only(top: 5),),
               Center(
                 child: ElevatedButton(onPressed: () {
+                FocusManager.instance.primaryFocus?.unfocus();
                 Functions.instance.phoneAuth(phone);
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   PageRouteBuilder(
                     pageBuilder: (context, animation1, animation2) =>

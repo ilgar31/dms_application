@@ -87,16 +87,31 @@ class _Home extends State {
                   ), Row(
                     children: [
                       IconButton(onPressed: () => {
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (context, animation1, animation2) =>
-                          Gifts(),
-                          transitionDuration: Duration(milliseconds: 300),
-                          transitionsBuilder: (_, a, __, c) =>
-                          FadeTransition(opacity: a, child: c),
+                      if (user == null) {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (context, animation1, animation2) =>
+                                Welcom(),
+                            transitionDuration: Duration(milliseconds: 300),
+                            transitionsBuilder: (_, a, __, c) =>
+                                FadeTransition(opacity: a, child: c),
+                          ),
                         ),
-                      ),
+                      }
+                      else
+                        {
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation1, animation2) =>
+                                  Gifts(),
+                              transitionDuration: Duration(milliseconds: 300),
+                              transitionsBuilder: (_, a, __, c) =>
+                                  FadeTransition(opacity: a, child: c),
+                            ),
+                          ),
+                        }
                         },
                       icon: Icon(Icons.card_giftcard, color: Colors.black, size:30)),
                       Padding(padding: EdgeInsets.only(left: 10),),
