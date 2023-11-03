@@ -42,6 +42,7 @@ class _Home extends State {
     final user = FirebaseAuth.instance.currentUser;
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: GestureDetector(
