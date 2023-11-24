@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:dms_project/pages/info.dart';
@@ -12,6 +14,9 @@ import 'package:dms_project/pages/gifts.dart';
 import 'package:dms_project/pages/notifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:get/get.dart';
+
 
 
 
@@ -20,6 +25,31 @@ void main() async {
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
 
     runApp(MaterialApp(home: Home()));
+}
+
+class ImageController extends GetxController {
+  final allImages = <String>[];
+
+  @override
+  void onReady() {
+    getAllImages();
+    super.onReady();
+  }
+
+  List backgrounds = [];
+
+  var loader = false;
+  Future<void> getAllImages() async {
+      loader = true;
+      ListResult result =
+      await FirebaseStorage.instance.ref().child('Истории').listAll();
+      loader = false;
+      for (Reference ref in result.items) {
+          String url = await FirebaseStorage.instance.ref(ref.fullPath).getDownloadURL();
+          debugPrint("==========>" + url);
+          allImages.add(url);
+      }
+  }
 }
 
 class Home extends StatefulWidget {
@@ -39,6 +69,7 @@ class _Home extends State {
 
   @override
   Widget build(BuildContext context) {
+    ImageController _imageController = Get.put(ImageController());
     final user = FirebaseAuth.instance.currentUser;
     return MaterialApp(
       home: Scaffold(
@@ -133,9 +164,30 @@ class _Home extends State {
                   )
                 ]
           ))),),
-        body: Center(
-          child: Text("Main Screen", style: TextStyle(color: Colors.black)),
+
+        body: Column(
+          children: [
+        Container(
+        margin: const EdgeInsets.symmetric(horizontal: 10),
+          height: 150,
+          child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (BuildContext context, int index) {
+                  return SizedBox(
+                    height:100,
+                    width: 100,
+                    child: FadeInImage(placeholder: AssetImage("assets/master.png"),
+                        image: NetworkImage(_imageController.allImages[index]))
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(width: 10);
+                },
+                itemCount: _imageController.allImages.length,
+            ),),
+          ],
         ),
+
         bottomNavigationBar: StyleProvider(
           style: Style(),
           child: ConvexAppBar(
