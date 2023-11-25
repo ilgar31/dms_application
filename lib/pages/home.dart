@@ -25,31 +25,6 @@ void main() async {
   runApp(MaterialApp(home: Home()));
 }
 
-class ImageController extends GetxController {
-  Map<String, dynamic> allImages = {};
-
-  @override
-  void onReady() {
-    getAllImages();
-    super.onReady();
-  }
-
-  void getAllImages() {
-      final result =
-      FirebaseFirestore.instance.collection(" Истории");
-      result.get().then(
-          (querySnapshot) {
-          print("Successfully completed");
-          for (var docSnapshot in querySnapshot.docs) {
-            print('${docSnapshot.id} => ${docSnapshot.data()}');
-            allImages[docSnapshot.id] = docSnapshot.data();
-          }
-        },
-      onError: (e) => print("Error completing: $e"),
-      );
-  }
-}
-
 class Home extends StatefulWidget {
   const Home({Key, key}): super(key: key);
 
@@ -66,17 +41,41 @@ class _Home extends State {
   }
 
   final user = FirebaseAuth.instance.currentUser;
-  ImageController _imageController = Get.put(ImageController());
+
+  Map<String, dynamic> allImages = {};
+
+  void getAllImages() async {
+    final result =
+    FirebaseFirestore.instance.collection(" Истории");
+    result.get().then(
+          (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          print('${docSnapshot.id} => ${docSnapshot.data()}');
+          allImages[docSnapshot.id] = docSnapshot.data();
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+  }
+
+  bool _showObject = false;
 
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 1));
-    print('sedf');
     super.initState();
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        _showObject = true;
+      });
+    });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
+    getAllImages();
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.white,
@@ -172,8 +171,9 @@ class _Home extends State {
           ))),),
 
         body: Column(
-          children: [
-        Container(
+          children: [_showObject
+              ?
+          Container(
         margin: const EdgeInsets.symmetric(horizontal: 10),
           height: 150,
           child: ListView.separated(
@@ -183,14 +183,15 @@ class _Home extends State {
                     height:100,
                     width: 100,
                     child: FadeInImage(placeholder: AssetImage("assets/master.png"),
-                        image: NetworkImage(_imageController.allImages["${index + 1}"]['url']))
+                        image: NetworkImage(allImages["${index + 1}"]['url']))
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {
                   return SizedBox(width: 10);
                 },
-                itemCount: _imageController.allImages.length,
-            ),),
+                itemCount: allImages.length,
+            ),) : Container(height: 150),
+            Text('lsdkf'),
           ],
         ),
 

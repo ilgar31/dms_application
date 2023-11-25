@@ -33,15 +33,15 @@ class _More extends State {
         alignment: Alignment.centerLeft,
         child:
             Padding(padding: EdgeInsets.only(left: 25),
-            child:  Text(service, style: TextStyle(color: Colors.white, fontSize: 20, fontFamily: "Inter", fontWeight: FontWeight.w600)),),),
+            child:  Text(service, style: TextStyle(color: Colors.white, fontSize: 18, fontFamily: "Inter", fontWeight: FontWeight.w600)),),),
         style: ElevatedButton.styleFrom(
         primary: Color(0xff494949),
-        padding: EdgeInsets.symmetric(vertical: 16.5),
+        padding: EdgeInsets.symmetric(vertical: 10),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25), // <-- Radius
         ),
         minimumSize: Size(MediaQuery.of(context).size.width * 0.85, 40),
-        maximumSize: Size(MediaQuery.of(context).size.width * 0.85, 60)
+        maximumSize: Size(MediaQuery.of(context).size.width * 0.85, 50)
       ),);
   }
 
