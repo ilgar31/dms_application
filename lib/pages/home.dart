@@ -13,6 +13,7 @@ import 'package:dms_project/pages/notifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 
@@ -25,7 +26,7 @@ void main() async {
 }
 
 class ImageController extends GetxController {
-  final allImages = <String>[];
+  Map<String, dynamic> allImages = {};
 
   @override
   void onReady() {
@@ -33,19 +34,19 @@ class ImageController extends GetxController {
     super.onReady();
   }
 
-  List backgrounds = [];
-
-  var loader = false;
-  Future<void> getAllImages() async {
-      loader = true;
-      ListResult result =
-      await FirebaseStorage.instance.ref().child('Истории').listAll();
-      loader = false;
-      for (Reference ref in result.items) {
-          String url = await FirebaseStorage.instance.ref(ref.fullPath).getDownloadURL();
-          debugPrint("==========>" + url);
-          allImages.add(url);
-      }
+  void getAllImages() {
+      final result =
+      FirebaseFirestore.instance.collection(" Истории");
+      result.get().then(
+          (querySnapshot) {
+          print("Successfully completed");
+          for (var docSnapshot in querySnapshot.docs) {
+            print('${docSnapshot.id} => ${docSnapshot.data()}');
+            allImages[docSnapshot.id] = docSnapshot.data();
+          }
+        },
+      onError: (e) => print("Error completing: $e"),
+      );
   }
 }
 
@@ -64,11 +65,18 @@ class _Home extends State {
     await FirebaseAuth.instance.signOut();
   }
 
+  final user = FirebaseAuth.instance.currentUser;
+  ImageController _imageController = Get.put(ImageController());
+
+  @override
+  void initState() {
+    Future.delayed(const Duration(seconds: 1));
+    print('sedf');
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
-    ImageController _imageController = Get.put(ImageController());
-
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.white,
@@ -175,7 +183,7 @@ class _Home extends State {
                     height:100,
                     width: 100,
                     child: FadeInImage(placeholder: AssetImage("assets/master.png"),
-                        image: NetworkImage(_imageController.allImages[index]))
+                        image: NetworkImage(_imageController.allImages["${index + 1}"]['url']))
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {
