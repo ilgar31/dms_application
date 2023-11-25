@@ -64,7 +64,7 @@ class _Home extends State {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 500), () {
+    Future.delayed(Duration(milliseconds: 1000), () {
       setState(() {
         _showObject = true;
       });
@@ -170,31 +170,43 @@ class _Home extends State {
                 ]
           ))),),
 
-        body: Column(
+        body: Padding(padding: EdgeInsets.only(top: 10), child: Column(
           children: [_showObject
               ?
           Container(
-        margin: const EdgeInsets.symmetric(horizontal: 10),
+          margin: const EdgeInsets.symmetric(horizontal: 10),
           height: 150,
           child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int index) {
-                  return SizedBox(
-                    height:100,
-                    width: 100,
-                    child: FadeInImage(placeholder: AssetImage("assets/master.png"),
-                        image: NetworkImage(allImages["${index + 1}"]['url']))
+                  return Container(
+                    height:150,
+                    width: 110,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: FadeInImage(
+                                placeholder: AssetImage("assets/master.png"),
+                                image: NetworkImage(allImages["${index + 1}"]['url']),
+                                fit: BoxFit.fill,
+                              )
+                    )
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {
                   return SizedBox(width: 10);
                 },
                 itemCount: allImages.length,
-            ),) : Container(height: 150),
+            ),) : Container(height: 150, child: Center(child: CircularProgressIndicator(color: Colors.black,),)),
             Text('lsdkf'),
           ],
-        ),
-
+        ),),
         bottomNavigationBar: StyleProvider(
           style: Style(),
           child: ConvexAppBar(
