@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:dms_project/pages/info.dart';
@@ -13,7 +11,6 @@ import 'package:dms_project/pages/welcom.dart';
 import 'package:dms_project/pages/gifts.dart';
 import 'package:dms_project/pages/notifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 
@@ -21,10 +18,10 @@ import 'package:get/get.dart';
 
 
 void main() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
 
-    runApp(MaterialApp(home: Home()));
+  runApp(MaterialApp(home: Home()));
 }
 
 class ImageController extends GetxController {
@@ -69,8 +66,9 @@ class _Home extends State {
 
   @override
   Widget build(BuildContext context) {
-    ImageController _imageController = Get.put(ImageController());
     final user = FirebaseAuth.instance.currentUser;
+    ImageController _imageController = Get.put(ImageController());
+
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.white,
