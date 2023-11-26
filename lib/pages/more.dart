@@ -5,6 +5,7 @@ import 'package:dms_project/pages/game.dart';
 import 'package:dms_project/pages/home.dart';
 import 'package:dms_project/pages/settings.dart';
 import 'package:dms_project/pages/price.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() => runApp(More());
 
@@ -45,6 +46,16 @@ class _More extends State {
       ),);
   }
 
+
+  void _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -83,7 +94,9 @@ class _More extends State {
               )
           ),
           Center(child:
-          ElevatedButton(onPressed: () {},
+          ElevatedButton(onPressed: () {
+            _launchURL('tel:+79622087777');
+          },
             child: Text("Связаться с нами", style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: "Inter", fontWeight: FontWeight.w600)),
             style: ElevatedButton.styleFrom(
                 primary: Colors.white,

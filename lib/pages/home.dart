@@ -249,21 +249,28 @@ class _Home extends State {
                   SizedBox(width: 10),
                   GestureDetector(
                       onTap: () {
-                        _launchURL('https://vk.com/dental_technician_76');
+                        _launchURL('https://t.me/master_stomatologiya');
                       },
                       child: Image.asset('assets/telegram.png')
                   ),
                   SizedBox(width: 10),
                   GestureDetector(
                       onTap: () {
-                        _launchURL('https://vk.com/dental_technician_76');
+                        _launchURL('https://wa.me/89622087777');
                       },
                       child: Image.asset('assets/whatsapp.png')
                   ),
                   SizedBox(width: 10),
                   GestureDetector(
                       onTap: () {
-                        _launchURL('https://vk.com/dental_technician_76');
+                        _launchURL('https://www.instagram.com/master_dental_studio/');
+                      },
+                      child: Image.asset('assets/inst.png')
+                  ),
+                  SizedBox(width: 10),
+                  GestureDetector(
+                      onTap: () {
+                        _launchURL('https://youtube.com/@MASTERstom-76?si=0f-i18S0jNqPT3EC');
                       },
                       child: Image.asset('assets/youtube.png')
                   ),
