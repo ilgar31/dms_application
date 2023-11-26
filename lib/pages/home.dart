@@ -11,9 +11,9 @@ import 'package:dms_project/pages/welcom.dart';
 import 'package:dms_project/pages/gifts.dart';
 import 'package:dms_project/pages/notifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:get/get.dart';
+import 'package:dms_project/pages/stories.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 
@@ -43,6 +43,7 @@ class _Home extends State {
   final user = FirebaseAuth.instance.currentUser;
 
   Map<String, dynamic> allImages = {};
+  List docs = [];
 
   void getAllImages() async {
     final result =
@@ -53,6 +54,7 @@ class _Home extends State {
         for (var docSnapshot in querySnapshot.docs) {
           print('${docSnapshot.id} => ${docSnapshot.data()}');
           allImages[docSnapshot.id] = docSnapshot.data();
+          docs.add(FirebaseFirestore.instance.collection(" Истории").doc(docSnapshot.id).collection('Контент'));
         }
       },
       onError: (e) => print("Error completing: $e"),
@@ -71,7 +73,13 @@ class _Home extends State {
     });
   }
 
-
+  void _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -179,32 +187,91 @@ class _Home extends State {
           child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    height:150,
-                    width: 110,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: FadeInImage(
-                                placeholder: AssetImage("assets/master.png"),
-                                image: NetworkImage(allImages["${index + 1}"]['url']),
-                                fit: BoxFit.fill,
-                              )
-                    )
-                  );
+                  return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (context, animation1, animation2) =>
+                                Story(data: docs[index + 1]),
+                            transitionDuration: Duration(milliseconds: 300),
+                            transitionsBuilder: (_, a, __, c) =>
+                                FadeTransition(opacity: a, child: c),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        height:150,
+                        width: 110,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: FadeInImage(
+                                    placeholder: AssetImage("assets/master.png"),
+                                    image: NetworkImage(allImages["${index + 1}"]['url']),
+                                    fit: BoxFit.fill,
+                                  )
+                        )
+                  ));
                 },
                 separatorBuilder: (BuildContext context, int index) {
                   return SizedBox(width: 10);
                 },
                 itemCount: allImages.length,
             ),) : Container(height: 150, child: Center(child: CircularProgressIndicator(color: Colors.black,),)),
-            Text('lsdkf'),
+            SizedBox(height: 20,),
+            Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 15.0),
+                  child: Text('Наши социальные сети', style: TextStyle(color: Colors.black, fontSize: 19, fontFamily: "Inter", fontWeight: FontWeight.w500),),
+                ),
+            ),
+            SizedBox(height: 10,),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              height: 75,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      _launchURL('https://vk.com/dental_technician_76');
+                    },
+                    child: Image.asset('assets/vk.png')
+                  ),
+                  SizedBox(width: 10),
+                  GestureDetector(
+                      onTap: () {
+                        _launchURL('https://vk.com/dental_technician_76');
+                      },
+                      child: Image.asset('assets/telegram.png')
+                  ),
+                  SizedBox(width: 10),
+                  GestureDetector(
+                      onTap: () {
+                        _launchURL('https://vk.com/dental_technician_76');
+                      },
+                      child: Image.asset('assets/whatsapp.png')
+                  ),
+                  SizedBox(width: 10),
+                  GestureDetector(
+                      onTap: () {
+                        _launchURL('https://vk.com/dental_technician_76');
+                      },
+                      child: Image.asset('assets/youtube.png')
+                  ),
+                  SizedBox(width: 10),
+                ],
+              )
+
+            )
           ],
         ),),
         bottomNavigationBar: StyleProvider(
