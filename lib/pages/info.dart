@@ -70,7 +70,7 @@ class _Info extends State {
                 );
               }
               if (i == 2) {
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   PageRouteBuilder(
                     pageBuilder: (context, animation1, animation2) => Game(),
