@@ -93,14 +93,15 @@ class _More extends State {
                 ],
               )
           ),
+          Spacer(),
           Center(child:
-          ElevatedButton(onPressed: () {
-            _launchURL('tel:+79622087777');
-          },
+            ElevatedButton(onPressed: () {
+              _launchURL('tel:+79622087777');
+            },
             child: Text("Связаться с нами", style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: "Inter", fontWeight: FontWeight.w600)),
             style: ElevatedButton.styleFrom(
                 primary: Colors.white,
-                padding: EdgeInsets.symmetric(vertical: 16.5),
+                padding: EdgeInsets.symmetric(vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                   side: BorderSide(
@@ -110,7 +111,11 @@ class _More extends State {
                 ),
                 minimumSize: Size(MediaQuery.of(context).size.width * 0.85, 40),
                 maximumSize: Size(MediaQuery.of(context).size.width * 0.85, 60)
-            ),),),],),
+              ),
+            ),
+          ),
+          Padding(padding: EdgeInsets.only(bottom: 50),),
+          ],),
           bottomNavigationBar: StyleProvider(
             style: Style(),
             child: ConvexAppBar(

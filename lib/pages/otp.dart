@@ -10,9 +10,21 @@ import 'package:dms_project/functions/otp_controller.dart';
 import 'package:flutterotpfield/flutterotpfield.dart';
 
 
+class OTP extends StatefulWidget {
 
-class OTP extends StatelessWidget {
-  const OTP({Key? key}) : super(key: key);
+  dynamic phone;
+
+  OTP({ super.key, required this.phone});
+  @override
+  _OTP createState() => _OTP(this.phone);
+}
+
+
+class _OTP extends State<OTP> {
+  dynamic phone;
+
+  _OTP(this.phone);
+
 
   void CheckOtp(context, otp) {
     {
@@ -38,7 +50,7 @@ class OTP extends StatelessWidget {
               .doc(FirebaseAuth.instance.currentUser!.uid)
               .set({
             "Телефон": FirebaseAuth.instance.currentUser!.phoneNumber,
-            "ФИО": "Введите своё ФИО",
+            "ФИО": "Введите свое ФИО",
             "E-mail": "Введите свой E-mail",
             "День рождения": "Выберите дату рождения",
             "Пол": "Укажите муж/жен"
@@ -134,6 +146,12 @@ class OTP extends StatelessWidget {
                 ),
               ),
               ),
+              Padding(padding: EdgeInsets.only(top: 10)),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text("На ваш номер ${phone} отправлено СМС с кодом подтверждения", textAlign: TextAlign.center, style: TextStyle(color: Color(
+                    0xff7c7c7c), fontSize: 15, fontFamily: "SF"))
+              )
             ],
           ),
         ),

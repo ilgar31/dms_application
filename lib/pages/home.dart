@@ -45,6 +45,8 @@ class _Home extends State {
   Map<String, dynamic> allImages = {};
   List docs = [];
 
+  bool _showObject = false;
+
   void getAllImages() async {
     final result =
     FirebaseFirestore.instance.collection(" Истории");
@@ -56,12 +58,11 @@ class _Home extends State {
           allImages[docSnapshot.id] = docSnapshot.data();
           docs.add(FirebaseFirestore.instance.collection(" Истории").doc(docSnapshot.id).collection('Контент'));
         }
+        _showObject = true;
       },
       onError: (e) => print("Error completing: $e"),
     );
   }
-
-  bool _showObject = false;
 
   @override
   void initState() {
@@ -124,9 +125,10 @@ class _Home extends State {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.account_circle, color: Colors.black, size:30),
+                            Icon(Icons.account_circle, color: Color(0xF4494949), size:30),
                             Padding(padding: EdgeInsets.fromLTRB(25, 11, 50, 10),
-                                child: Text("Профиль", style: TextStyle(color: Colors.black, fontFamily: "SF", fontSize: 18
+                                child: Text("Профиль", style: TextStyle(color: Color(
+                                    0xF41E1E1E), fontFamily: "SF", fontSize: 18, fontWeight: FontWeight.w600
                                 ))),
                           ],
                         ), Row(
@@ -158,7 +160,7 @@ class _Home extends State {
                                   ),
                                 }
                             },
-                                icon: Icon(Icons.card_giftcard, color: Colors.black, size:30)),
+                                icon: Icon(Icons.card_giftcard, color: Color(0xF4494949), size:30)),
                             Padding(padding: EdgeInsets.only(left: 10),),
                             IconButton(onPressed: () => {
                               Navigator.push(
@@ -172,7 +174,7 @@ class _Home extends State {
                                 ),
                               ),
                             },
-                                icon: Icon(Icons.notifications_rounded, color: Colors.black, size:30))
+                                icon: Icon(Icons.notifications_rounded, color: Color(0xF4494949), size:30))
                           ],
                         )
                       ]
@@ -312,21 +314,31 @@ class _Home extends State {
                         onTap: () {
                           _launchURL('https://yandex.ru/maps/org/master/195214923875');
                         },
-                        child: Image.asset('assets/youtube.png')
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12.5),
+                            child: Image.asset('assets/yandex.png'),
+                        )
                     ),
                     SizedBox(width: 10),
                     GestureDetector(
                         onTap: () {
                           _launchURL('https://yandex.ru/maps/org/master/195214923875');
                         },
-                        child: Image.asset('assets/youtube.png')
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12.5),
+                            child: Image.asset('assets/2gis.png'),
+                        )
                     ),
                     SizedBox(width: 10),
                     GestureDetector(
-                        onTap: () {
-                          _launchURL('https://yandex.ru/maps/org/master/195214923875');
-                        },
-                        child: Image.asset('assets/youtube.png')
+                          onTap: () {
+                            _launchURL(
+                                'https://yandex.ru/maps/org/master/195214923875');
+                          },
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12.5),
+                              child: Image.asset('assets/googlemaps.png'),
+                          )
                     ),
                     SizedBox(width: 10),
                   ],
@@ -336,51 +348,46 @@ class _Home extends State {
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               child:
-              GestureDetector(
-                  onTap: () {
-                    var dataRef = FirebaseFirestore.instance.collection('users').doc(user?.uid);
-                    var name;
-                    var email;
-                    var birthday;
-                    var gender;
-                    dataRef.get().then(
-                          (DocumentSnapshot doc) {
-                        final data = doc.data() as Map<String, dynamic>;
-                        var name = data['ФИО'];
-                        var email = data['E-mail'];
-                        var birthday = data['День рождения'];
-                        var gender = data['Пол'];
+              Builder(
+                builder: (BuildContext innerContext) {
+                  return GestureDetector(
+                      onTap: () async {
+                        DocumentSnapshot<Map<String, dynamic>> dataRef = await FirebaseFirestore.instance.collection('users').doc(user?.uid).get();
+                        Map<String, dynamic> data = dataRef.data() as Map<String, dynamic>;
+                        String name = data['ФИО'];
+                        String email = data['E-mail'];
+                        String birthday = data['День рождения'];
+                        String gender = data['Пол'];
+                        bool flag = true;
+                        if (name == "Введите свое ФИО" || email == "Введите свой E-mail" || birthday == "Выберите дату рождения" || gender == "Укажите муж/жен") {
+                          flag = false;
+                        }
+                        if (user == null){
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation1, animation2) =>
+                                  Welcom(),
+                              transitionDuration: Duration(milliseconds: 700),
+                              transitionsBuilder: (_, a, __, c) =>
+                                  FadeTransition(opacity: a, child: c),
+                            ),
+                          );
+                        }
+                        else if (flag) {
+                          // успешное создание карты
+                        }
+                        else {
+                          final snackBar = SnackBar(content: Text('Пожалуйста, заполните все поля в свом профиле\n'));
+                          ScaffoldMessenger.of(innerContext).showSnackBar(snackBar);
+                        }
                       },
-                      onError: (e) => print("Error getting document: $e"),
-                    );
-                    bool flag = true;
-                    if (name == "Введите своё ФИО" || email == "Введите свой E-mail" || birthday == "Выберите дату рождения" || gender == "Укажите муж/жен") {
-                      flag = false;
-                    }
-
-                    if (user == null){
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder: (context, animation1, animation2) =>
-                              Welcom(),
-                          transitionDuration: Duration(milliseconds: 700),
-                          transitionsBuilder: (_, a, __, c) =>
-                              FadeTransition(opacity: a, child: c),
-                        ),
-                      );
-                    }
-                    else if (flag) {
-                    // успешное создание карты
-                    }
-                    else {
-                    // сообщение о редактировании профиля
-                    }
-                  },
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                        child: Image.asset('assets/card.png')
-                )
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.asset('assets/card.png')
+                      )
+                  );
+                },
               ),
             )
           ],

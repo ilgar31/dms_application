@@ -78,7 +78,7 @@ class MyAuth extends StatelessWidget {
                   context,
                   PageRouteBuilder(
                     pageBuilder: (context, animation1, animation2) =>
-                        OTP(),
+                        OTP(phone: phone),
                     transitionDuration: Duration(milliseconds: 300),
                     transitionsBuilder: (_, a, __, c) =>
                         FadeTransition(opacity: a, child: c),
