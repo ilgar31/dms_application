@@ -67,7 +67,7 @@ class _Home extends State {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 1000), () {
+    Future.delayed(Duration(milliseconds: 1250), () {
       setState(() {
         _showObject = true;
       });
@@ -207,7 +207,7 @@ class _Home extends State {
                         width: 110,
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Colors.black,
+                            color: Color(0xF4494949),
                             width: 2,
                           ),
                           borderRadius: BorderRadius.circular(12),
@@ -314,31 +314,58 @@ class _Home extends State {
                         onTap: () {
                           _launchURL('https://yandex.ru/maps/org/master/195214923875');
                         },
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12.5),
-                            child: Image.asset('assets/yandex.png'),
+                        child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Color(0xF4494949), // Цвет границы
+                                width: 2.0, // Ширина границы
+                              ),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image.asset('assets/yandex.png'),
+                          ),
                         )
                     ),
                     SizedBox(width: 10),
                     GestureDetector(
                         onTap: () {
-                          _launchURL('https://yandex.ru/maps/org/master/195214923875');
+                          _launchURL('https://2gis.ru/yaroslavl/firm/70000001033341570/39.840471%2C57.640445?m=39.839993%2C57.640385%2F19.96%2Fp%2F50%2Fr%2F-154.55');
                         },
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12.5),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Color(0xF4494949), // Цвет границы
+                              width: 2.0, // Ширина границы
+                            ),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
                             child: Image.asset('assets/2gis.png'),
+                          ),
                         )
                     ),
                     SizedBox(width: 10),
                     GestureDetector(
                           onTap: () {
                             _launchURL(
-                                'https://yandex.ru/maps/org/master/195214923875');
+                                'https://www.google.com/maps/place/Master+Dental+Studio/@57.657044,39.8448181,18.21z/data=!4m6!3m5!1s0x46b291975ff08481:0x147a1d7e9d8cb30d!8m2!3d57.6569464!4d39.8458057!16s%2Fg%2F11h53wl2kt?hl=ru&entry=ttu');
                           },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Color(0xF4494949), // Цвет границы
+                              width: 2.0, // Ширина границы
+                            ),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
                           child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12.5),
-                              child: Image.asset('assets/googlemaps.png'),
-                          )
+                            borderRadius: BorderRadius.circular(15),
+                            child: Image.asset('assets/googlemaps.png'),
+                          ),
+                        )
                     ),
                     SizedBox(width: 10),
                   ],
@@ -352,16 +379,6 @@ class _Home extends State {
                 builder: (BuildContext innerContext) {
                   return GestureDetector(
                       onTap: () async {
-                        DocumentSnapshot<Map<String, dynamic>> dataRef = await FirebaseFirestore.instance.collection('users').doc(user?.uid).get();
-                        Map<String, dynamic> data = dataRef.data() as Map<String, dynamic>;
-                        String name = data['ФИО'];
-                        String email = data['E-mail'];
-                        String birthday = data['День рождения'];
-                        String gender = data['Пол'];
-                        bool flag = true;
-                        if (name == "Введите свое ФИО" || email == "Введите свой E-mail" || birthday == "Выберите дату рождения" || gender == "Укажите муж/жен") {
-                          flag = false;
-                        }
                         if (user == null){
                           Navigator.push(
                             context,
@@ -374,12 +391,24 @@ class _Home extends State {
                             ),
                           );
                         }
-                        else if (flag) {
-                          // успешное создание карты
-                        }
                         else {
-                          final snackBar = SnackBar(content: Text('Пожалуйста, заполните все поля в свом профиле\n'));
-                          ScaffoldMessenger.of(innerContext).showSnackBar(snackBar);
+                          DocumentSnapshot<Map<String, dynamic>> dataRef = await FirebaseFirestore.instance.collection('users').doc(user?.uid).get();
+                          Map<String, dynamic> data = dataRef.data() as Map<String, dynamic>;
+                          String name = data['ФИО'];
+                          String email = data['E-mail'];
+                          String birthday = data['День рождения'];
+                          String gender = data['Пол'];
+                          bool flag = true;
+                          if (name == "Введите свое ФИО" || email == "Введите свой E-mail" || birthday == "Выберите дату рождения" || gender == "Укажите муж/жен") {
+                            flag = false;
+                          }
+                          if (flag) {
+                            // успешное создание карты
+                          }
+                          else {
+                            final snackBar = SnackBar(content: Text('Пожалуйста, заполните все поля в свом профиле\n'));
+                            ScaffoldMessenger.of(innerContext).showSnackBar(snackBar);
+                          }
                         }
                       },
                       child: ClipRRect(
