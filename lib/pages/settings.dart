@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:dms_project/pages/info.dart';
-import 'package:dms_project/pages/game.dart';
+import 'package:dms_project/game/game.dart';
 import 'package:dms_project/pages/more.dart';
 import 'package:dms_project/pages/home.dart';
 
