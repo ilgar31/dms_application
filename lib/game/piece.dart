@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:flutter/src/widgets/image.dart';
+
 import 'values.dart';
 import 'game.dart';
 
@@ -11,8 +13,8 @@ class Piece {
 
   List<int> position = [];
 
-  Color get color {
-    return tetrominoColors[type] ?? const Color(0xFFFFFFFF);
+  Image? get image {
+    return tetrominoImages[type];
   }
 
   void initializePiece() {

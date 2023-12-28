@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
 
 class Tooth extends StatelessWidget {
-  var color;
-  var child;
-  Tooth({super.key, required this.color, required this.child});
+  var image;
+  Tooth({super.key, required this.image});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(4)),
-      margin: EdgeInsets.all(1),
-      child: Center(
-        child: Text(
-           child.toString(),
-          style: TextStyle(color: Colors.white),
-        ),
-      )
-    );
+    if (image == '') {
+      return Container(
+          decoration: BoxDecoration(color: Color(0x40fbf9f9), borderRadius: BorderRadius.circular(5)),
+          margin: EdgeInsets.all(1),
+          child: Center(
+            child: Text(''),
+          )
+      );
+    }
+    else {
+      return Container(
+          decoration: BoxDecoration(color: Color(0x40fbf9f9), borderRadius: BorderRadius.circular(5)),
+          margin: EdgeInsets.all(1),
+          child: Center(
+            child: image,
+          )
+      );
+    }
   }
 }

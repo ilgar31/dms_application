@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
+
 int rowLength = 10;
 int colLength = 15;
 
@@ -19,12 +21,13 @@ enum Tetromino {
   T
 }
 
-const Map<Tetromino, Color> tetrominoColors = {
-  Tetromino.L: Color(0xFFFFA500),
-  Tetromino.J: Color(0xFF0048FF),
-  Tetromino.I: Color(0xFFE807F8),
-  Tetromino.O: Color(0xFFFFFC00),
-  Tetromino.S: Color(0xFF007715),
-  Tetromino.Z: Color(0xFFFF0000),
-  Tetromino.T: Color(0xFF6B006E),
+Map<Tetromino, Image> tetrominoImages = {
+  Tetromino.L: Image.asset("assets/tooth_orange.png"),
+  Tetromino.J: Image.asset("assets/tooth_blue.png"),
+  Tetromino.I: Image.asset("assets/tooth_white_blue.png"),
+  Tetromino.O: Image.asset("assets/tooth_yellow.png"),
+  Tetromino.S: Image.asset("assets/tooth_green.png"),
+  Tetromino.Z: Image.asset("assets/tooth_red.png"),
+  Tetromino.T: Image.asset("assets/tooth_purple.png"),
 };
+

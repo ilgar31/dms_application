@@ -19,7 +19,17 @@ class Game extends StatefulWidget {
 }
 
 class _Game extends State<Game> {
-  Piece currentPiece = Piece(type: Tetromino.Z);
+  Piece currentPiece = Piece(type: Tetromino.values[Random().nextInt(7)]);
+
+  double x = 0.0;
+  int currentMove = 0;
+
+  double abs(double n) {
+    if (n >= 0) return n;
+    return -n;
+  }
+
+  bool hasSwipedDown = false;
 
   int currentScore = 0;
 
@@ -35,7 +45,7 @@ class _Game extends State<Game> {
   void startGame() {
     currentPiece.initializePiece();
 
-    Duration frameRate = const Duration(milliseconds: 200);
+    Duration frameRate = const Duration(milliseconds: 700);
     gameLoop(frameRate);
   }
 
@@ -116,6 +126,7 @@ class _Game extends State<Game> {
           gameBoard[row][col] = currentPiece.type;
         }
       }
+      hasSwipedDown = false;
       createNewPiece();
     }
   }
@@ -123,7 +134,7 @@ class _Game extends State<Game> {
   void createNewPiece() {
     Random rand = Random();
 
-    Tetromino randomType = Tetromino.values[rand.nextInt(Tetromino.values.length)];
+    Tetromino randomType = Tetromino.values[rand.nextInt(7)];
     currentPiece = Piece(type: randomType);
     currentPiece.initializePiece();
 
@@ -262,16 +273,45 @@ class _Game extends State<Game> {
               child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: GestureDetector(
-                  onHorizontalDragEnd: (DragEndDetails details) {
-                    if (details.primaryVelocity! > 0) {
+                  onHorizontalDragUpdate: (DragUpdateDetails details) {
+                    x += details.delta.dx as double;
+                    int move = (x / 40).floor();
+                    for (int i = currentMove; i < move; i++) {
                       moveRight();
-                    } else if (details.primaryVelocity! < 0) {
+                    }
+                    for (int i = move; i < currentMove; i++) {
                       moveLeft();
                     }
+                    currentMove = move;
                   },
                   onTap: () {
                     rotatePiece();
                   },
+                  onVerticalDragUpdate: (details) {
+                    if (!hasSwipedDown && details.delta.dy < 40 ) {
+                      hasSwipedDown = true;
+                      Timer.periodic(
+                      Duration(milliseconds: 100),
+                      (timer) {
+                        setState(() {
+                          currentPiece.movePlace(Direction.down);
+                          if (checkCollision(Direction.down)) {
+                            for (int i = 0; i <
+                                currentPiece.position.length; i++) {
+                              int row = (currentPiece.position[i] / rowLength)
+                                  .floor();
+                              int col = currentPiece.position[i] % rowLength;
+                              if (row >= 0 && col >= 0) {
+                                gameBoard[row][col] = currentPiece.type;
+                              }
+                            }
+                            timer.cancel();
+                          }
+                        });
+                      }
+                    );
+                  }
+                    },
                   child: GridView.builder(
                   padding: EdgeInsets.zero,
                   physics: NeverScrollableScrollPhysics(),
@@ -282,14 +322,14 @@ class _Game extends State<Game> {
                     int row = (index / rowLength).floor();
                     int col = index % rowLength;
                     if (currentPiece.position.contains(index)) {
-                        return Tooth(color: currentPiece.color, child: '');
+                        return Tooth(image: currentPiece.image);
                     }
                     else if (gameBoard[row][col] != null) {
                         final Tetromino? tetrominoType = gameBoard[row][col];
-                        return Tooth(color: tetrominoColors[tetrominoType], child: '');
+                        return Tooth(image: tetrominoImages[tetrominoType]);
                     }
                     else {
-                        return Tooth(color: Colors.grey[900], child: '');
+                        return Tooth(image: '');
                     }
                   }
                 )
