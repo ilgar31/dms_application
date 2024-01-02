@@ -38,7 +38,7 @@ class _MyInput extends State<MyInput>{
   dynamic _user_input = '';
 
   DateTime currentDate(String input_value) {
-    if (input_value != "Введите дату рождения") {
+    if (input_value != "Выберите дату рождения") {
       List mas = input_value.split('/');
       return DateTime(int.parse(mas[2]), int.parse(mas[1]), int.parse(mas[0]));
     }

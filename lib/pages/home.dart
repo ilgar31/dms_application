@@ -10,6 +10,7 @@ import 'package:dms_project/pages/settings.dart';
 import 'package:dms_project/pages/welcom.dart';
 import 'package:dms_project/pages/gifts.dart';
 import 'package:dms_project/pages/notifications.dart';
+import 'package:dms_project/pages/create_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dms_project/pages/stories.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -403,7 +404,16 @@ class _Home extends State {
                             flag = false;
                           }
                           if (flag) {
-                            // успешное создание карты
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (context, animation1, animation2) =>
+                                    CreateCard(),
+                                transitionDuration: Duration(milliseconds: 700),
+                                transitionsBuilder: (_, a, __, c) =>
+                                    FadeTransition(opacity: a, child: c),
+                              ),
+                            );
                           }
                           else {
                             final snackBar = SnackBar(content: Text('Пожалуйста, заполните все поля в свом профиле\n'));

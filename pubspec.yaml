@@ -102,3 +102,6 @@ flutter:
     - assets/tooth_red.png
     - assets/tooth_white_blue.png
     - assets/tooth_yellow.png
+    - assets/test_card.png
+    - assets/card_text1.png
+    - assets/card_text2.png
