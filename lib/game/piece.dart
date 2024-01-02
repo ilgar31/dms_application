@@ -131,7 +131,7 @@ class Piece {
               position[1] - rowLength,
               position[1],
               position[1] + rowLength,
-              position[1] + rowLength + 1,
+              position[1] + rowLength - 1,
             ];
 
             if (piecePositionIsValid(newPosition)){

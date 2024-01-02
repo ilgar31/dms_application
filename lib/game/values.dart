@@ -3,7 +3,9 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 
 int rowLength = 10;
-int colLength = 15;
+int colLength = 17;
+
+String record = "";
 
 enum Direction {
   left,

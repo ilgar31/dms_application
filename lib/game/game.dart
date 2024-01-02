@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:dms_project/pages/home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'tooth.dart';
 import 'values.dart';
 import 'piece.dart';
@@ -38,6 +38,7 @@ class _Game extends State<Game> {
   @override
   void initState() {
     super.initState();
+    getRecord();
 
     startGame();
   }
@@ -126,8 +127,8 @@ class _Game extends State<Game> {
           gameBoard[row][col] = currentPiece.type;
         }
       }
-      hasSwipedDown = false;
       createNewPiece();
+      hasSwipedDown = false;
     }
   }
 
@@ -183,8 +184,9 @@ class _Game extends State<Game> {
           gameBoard[r] = List.from(gameBoard[r-1]);
         }
 
-        gameBoard[0] = List.generate(row, (index) => null);
+        gameBoard[0] = List.generate(rowLength, (index) => null);
         currentScore += 100;
+        updateRecord();
       }
     }
   }
@@ -198,12 +200,52 @@ class _Game extends State<Game> {
     return false;
   }
 
+  void getRecord() {
+    if (FirebaseAuth.instance.currentUser != null) {
+      final docRef = FirebaseFirestore.instance.collection(
+          'users').doc(
+          FirebaseAuth.instance.currentUser?.uid);
+      docRef.get().then(
+              (DocumentSnapshot doc) {
+            final data = doc.data() as Map<String, dynamic>;
+            record = data["Рекорд в игре"].toString();
+          }
+      );
+    }
+    else {
+      record = "Войдите в профиль чтобы сохранить свой рекорд";
+    }
+  }
+
+  void updateRecord() {
+    if (FirebaseAuth.instance.currentUser != null && currentScore > int.parse(record)) {
+      record = currentScore.toString();
+      final docRef = FirebaseFirestore.instance.collection(
+          'users').doc(
+          FirebaseAuth.instance.currentUser?.uid);
+      docRef.get().then(
+              (DocumentSnapshot doc) {
+            final data = doc.data() as Map<String, dynamic>;
+            data["Рекорд в игре"] = int.parse(record);
+            FirebaseFirestore.instance.collection("users")
+                .doc(FirebaseAuth.instance.currentUser?.uid)
+                .set(data);
+          }
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Color(0xffededed),
-        body: Padding(
+        body:
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+          Expanded(
+             child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15),
           child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -237,9 +279,11 @@ class _Game extends State<Game> {
               ),
               width: double.infinity,
               height: 70,
+              alignment: Alignment.center,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15),
-                child: Row(
+                child:
+                FirebaseAuth.instance.currentUser != null ? Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween, // Равномерное распределение между дочерними элементами
                 children: [
                   Container(
@@ -251,16 +295,20 @@ class _Game extends State<Game> {
                   Container(
                     alignment: Alignment.centerRight,
                     child: Text(
-                      currentScore.toString(),
+                      record,
                       style: TextStyle(color: Colors.white, fontSize: 18, fontFamily: "Inter", fontWeight: FontWeight.w600)),
                     ),
                 ],
+              ) : Text(
+                    record,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 18, fontFamily: "Inter", fontWeight: FontWeight.w600)),
               ),
-            ),),
+            ),
             Padding(padding: EdgeInsets.only(top: 10),),
             Container(
               width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.61 + 10,
+              height: MediaQuery.of(context).size.height * 0.7,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25.0),
                 border: Border.all(
@@ -291,7 +339,7 @@ class _Game extends State<Game> {
                     if (!hasSwipedDown && details.delta.dy < 40 ) {
                       hasSwipedDown = true;
                       Timer.periodic(
-                      Duration(milliseconds: 100),
+                      Duration(milliseconds: 9),
                       (timer) {
                         setState(() {
                           currentPiece.movePlace(Direction.down);
@@ -334,10 +382,38 @@ class _Game extends State<Game> {
                   }
                 )
               )
-            ))
+            )),
           ],
         )
-      ),
+      ),),
+              Container(
+                decoration: BoxDecoration(
+                  color: Color(0xff494949),// Установка радиуса скругления углов
+                ),
+                width: double.infinity,
+                height: 60,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 45),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween, // Равномерное распределение между дочерними элементами
+                    children: [
+                      Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                              'Счет:',
+                              style: TextStyle(color: Colors.white, fontSize: 18, fontFamily: "Inter", fontWeight: FontWeight.w600))
+                      ),
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                            currentScore.toString(),
+                            style: TextStyle(color: Colors.white, fontSize: 18, fontFamily: "Inter", fontWeight: FontWeight.w600)),
+                      ),
+                    ],
+                  ),
+                ),),
+            ],
+          )
       ),
     );
   }
