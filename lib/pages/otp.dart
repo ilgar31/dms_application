@@ -1,10 +1,7 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:dms_project/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:dms_project/pages/profile.dart';
 import 'package:dms_project/pages/home.dart';
 import 'package:dms_project/functions/otp_controller.dart';
 import 'package:flutterotpfield/flutterotpfield.dart';
@@ -55,6 +52,7 @@ class _OTP extends State<OTP> {
             "День рождения": "Выберите дату рождения",
             "Пол": "Укажите муж/жен",
             "Рекорд в игре": 0,
+            "Полис": "-",
           });
         }
         debugPrint("too!!!!!!!!!!!!!!!!!!!!!!!!!!!");

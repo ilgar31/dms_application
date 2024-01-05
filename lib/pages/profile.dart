@@ -174,7 +174,7 @@ class _MyInput extends State<MyInput>{
                         borderRadius: BorderRadius.all(Radius.circular(15))),
                     title: Text(input_name),
                     content: TextFormField(
-                      initialValue: input_value,
+                      initialValue: input_value == "Введите свое ФИО" || input_value == "Введите свой E-mail" ? "": input_value,
                       onChanged: (String value) {
                         _user_input = value;
                       },

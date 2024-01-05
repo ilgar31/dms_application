@@ -10,7 +10,7 @@ import 'package:dms_project/pages/settings.dart';
 import 'package:dms_project/pages/welcom.dart';
 import 'package:dms_project/pages/gifts.dart';
 import 'package:dms_project/pages/notifications.dart';
-import 'package:dms_project/pages/create_card.dart';
+import 'package:dms_project/card/create_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dms_project/pages/stories.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -83,8 +83,25 @@ class _Home extends State {
     }
   }
 
+  String polis = '-';
+
+  void getPolis () {
+    if (FirebaseAuth.instance.currentUser != null) {
+      final docRef = FirebaseFirestore.instance.collection(
+          'users').doc(
+          FirebaseAuth.instance.currentUser?.uid);
+      docRef.get().then(
+              (DocumentSnapshot doc) {
+            final data = doc.data() as Map<String, dynamic>;
+            polis = data["Полис"];
+          }
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    getPolis();
     getAllImages();
     return MaterialApp(
       home: Scaffold(
@@ -373,7 +390,7 @@ class _Home extends State {
                 )
             ),
             SizedBox(height: 25,),
-            Container(
+            FirebaseAuth.instance.currentUser == null || polis == '-' ? Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               child:
               Builder(
@@ -416,7 +433,7 @@ class _Home extends State {
                             );
                           }
                           else {
-                            final snackBar = SnackBar(content: Text('Пожалуйста, заполните все поля в свом профиле\n'));
+                            final snackBar = SnackBar(content: Text('Пожалуйста, заполните все поля в свом профиле\n\n', textAlign: TextAlign.center,));
                             ScaffoldMessenger.of(innerContext).showSnackBar(snackBar);
                           }
                         }
@@ -428,7 +445,7 @@ class _Home extends State {
                   );
                 },
               ),
-            )
+            ) : Text(polis),
           ],
         ),),
         bottomNavigationBar: StyleProvider(

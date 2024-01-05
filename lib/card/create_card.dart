@@ -1,12 +1,7 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:dms_project/firebase_options.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:dms_project/pages/profile.dart';
-import 'package:dms_project/pages/home.dart';
-import 'package:dms_project/functions/otp_controller.dart';
+import 'card_loading.dart';
+
 
 
 
@@ -33,14 +28,23 @@ class CreateCard extends StatelessWidget {
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset('test_card.png'),
-              Padding(padding: EdgeInsets.only(top: 30),),
-              Image.asset('card_text1.png'),
+              Image.asset('assets/test_card.png'),
+              Padding(padding: EdgeInsets.only(top: 20),),
+              Image.asset('assets/card_text1.png'),
+              Padding(padding: EdgeInsets.only(top: 15),),
+              Image.asset('assets/card_text2.png'),
               Padding(padding: EdgeInsets.only(top: 25),),
-              Image.asset('card_text2.png'),
-              Padding(padding: EdgeInsets.only(top: 25),),
-              ElevatedButton(onPressed: () {},
-                child: Text("Открыть полис “MASTER”", style: TextStyle(color: Colors.white, fontSize: 20, fontFamily: "Inter", fontWeight: FontWeight.w600),),
+              ElevatedButton(onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation1, animation2) => CardLoading(),
+                    transitionDuration: Duration(milliseconds: 300),
+                    transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
+                  ),
+                );
+              },
+                child: Text("Открыть полис “MASTER”", style: TextStyle(color: Colors.white, fontSize: 18, fontFamily: "Inter", fontWeight: FontWeight.w500),),
                 style: ElevatedButton.styleFrom(
                   primary: Color(0xff3b3b3b),
                   padding: EdgeInsets.symmetric(horizontal: 45, vertical: 12),

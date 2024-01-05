@@ -37,6 +37,12 @@ class MyAuth extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Expanded(
+                child:
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
               Padding( padding: const EdgeInsets.only(left: 35.0),
                child: Text("Введите номер телефона", style: TextStyle(color: Color(
                    0xff7c7c7c), fontSize: 17, fontFamily: "SF"), textAlign: TextAlign.left,),),
@@ -94,6 +100,21 @@ class MyAuth extends StatelessWidget {
               ),
               ),
               )
+                ],
+             ),),
+              Padding(padding: EdgeInsets.only(left: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Авторизуясь, вы принимаете", style: TextStyle(color: Colors.black, fontSize: 14, fontFamily: "Inter", fontWeight: FontWeight.w500), textAlign: TextAlign.left,),
+                  TextButton(onPressed: () {}, child: Text("Пользовательское соглашение", style: TextStyle(color: Colors.blue, fontSize: 14, fontFamily: "Inter", fontWeight: FontWeight.w500)),   style: ButtonStyle(
+                    padding: MaterialStateProperty.all(EdgeInsets.zero),
+                    minimumSize: MaterialStateProperty.all(Size.zero),
+                  )),
+                ],
+              )
+                ,),
+              SizedBox(height: 30,),
             ],
         ),
       ),
